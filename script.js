@@ -13,7 +13,7 @@ const copyLocation = document.getElementById("copyLocation");
 const saveDate = document.getElementById("saveDate");
 const locationUrl = "https://maps.app.goo.gl/LdvfGQ3KJbN5LLx17";
 const musicSources = [
-  "assets/Inkem Inkem Inkem Kaavaale Flute Siva Geetha Govindam - flutesiva (128k).mp3"
+  "assets/Inkem%20Inkem%20Inkem%20Kaavaale%20Flute%20Siva%20Geetha%20Govindam%20-%20flutesiva%20(128k).mp3"
 ];
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -401,6 +401,7 @@ async function playAudioSource(index = 0) {
     const cleanup = () => {
       bgMusic.removeEventListener("error", fail);
       bgMusic.removeEventListener("canplay", success);
+      bgMusic.removeEventListener("playing", playing);
       window.clearTimeout(timeout);
     };
     const finish = (result) => {
@@ -409,12 +410,26 @@ async function playAudioSource(index = 0) {
       cleanup();
       resolve(result);
     };
-    const fail = () => finish(false);
-    const success = () => finish(true);
-    const timeout = window.setTimeout(() => finish(false), 3000); // 3 seconds timeout
+    const fail = () => {
+      console.log("Audio failed to load");
+      finish(false);
+    };
+    const success = () => {
+      console.log("Audio ready to play");
+      finish(true);
+    };
+    const playing = () => {
+      console.log("Audio started playing");
+      finish(true);
+    };
+    const timeout = window.setTimeout(() => {
+      console.log("Audio load timeout");
+      finish(false);
+    }, 5000); // Increased to 5 seconds
 
     bgMusic.addEventListener("error", fail, { once: true });
     bgMusic.addEventListener("canplay", success, { once: true });
+    bgMusic.addEventListener("playing", playing, { once: true });
     bgMusic.play().then(() => finish(true)).catch(() => finish(false));
   });
 
@@ -422,7 +437,7 @@ async function playAudioSource(index = 0) {
   bgMusic.pause();
   bgMusic.removeAttribute("src");
   bgMusic.load();
-  return playAudioSource(index + 1);
+  return false; // Don't try next source - only use flute version
 }
 
 async function startMusic() {
@@ -439,7 +454,7 @@ async function startMusic() {
     audioState.usingAudioElement = false;
   }
 
-  startSynthMusic();
+  // Don't fallback to synth music
 }
 
 function stopSynthMusic() {
