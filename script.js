@@ -13,11 +13,7 @@ const copyLocation = document.getElementById("copyLocation");
 const saveDate = document.getElementById("saveDate");
 const locationUrl = "https://maps.app.goo.gl/LdvfGQ3KJbN5LLx17";
 const musicSources = [
-  "assets/inkem-inkem-kavali.mp3",
-  "assets/inkem-inkem-kavali.m4a",
-  "assets/movie-song.mp3",
-  "assets/movie-song.m4a",
-  "assets/telugu-festive-song.wav"
+  "assets/inkem-inkem-kavali.mp3"
 ];
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -397,13 +393,14 @@ async function playAudioSource(index = 0) {
   if (!bgMusic || index >= musicSources.length) return false;
 
   bgMusic.src = musicSources[index];
-  bgMusic.volume = index === musicSources.length - 1 ? 0.78 : 0.86;
+  bgMusic.volume = 0.86;
   bgMusic.load();
 
   const started = await new Promise((resolve) => {
     let settled = false;
     const cleanup = () => {
       bgMusic.removeEventListener("error", fail);
+      bgMusic.removeEventListener("canplay", success);
       window.clearTimeout(timeout);
     };
     const finish = (result) => {
@@ -413,9 +410,11 @@ async function playAudioSource(index = 0) {
       resolve(result);
     };
     const fail = () => finish(false);
-    const timeout = window.setTimeout(() => finish(false), 1400);
+    const success = () => finish(true);
+    const timeout = window.setTimeout(() => finish(false), 3000); // Increased timeout to 3 seconds
 
     bgMusic.addEventListener("error", fail, { once: true });
+    bgMusic.addEventListener("canplay", success, { once: true });
     bgMusic.play().then(() => finish(true)).catch(() => finish(false));
   });
 
