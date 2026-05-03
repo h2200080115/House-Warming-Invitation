@@ -13,7 +13,7 @@ const copyLocation = document.getElementById("copyLocation");
 const saveDate = document.getElementById("saveDate");
 const locationUrl = "https://maps.app.goo.gl/LdvfGQ3KJbN5LLx17";
 const musicSources = [
-  "assets/inkem-inkem-kavali.mp3"
+  "assets/Inkem Inkem Inkem Kaavaale Flute Siva Geetha Govindam - flutesiva (128k).mp3"
 ];
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -411,7 +411,7 @@ async function playAudioSource(index = 0) {
     };
     const fail = () => finish(false);
     const success = () => finish(true);
-    const timeout = window.setTimeout(() => finish(false), 3000); // Increased timeout to 3 seconds
+    const timeout = window.setTimeout(() => finish(false), 3000); // 3 seconds timeout
 
     bgMusic.addEventListener("error", fail, { once: true });
     bgMusic.addEventListener("canplay", success, { once: true });
