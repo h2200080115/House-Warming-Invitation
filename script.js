@@ -72,6 +72,7 @@ openInvitation?.addEventListener("click", openIntro);
 
 window.addEventListener("load", () => {
   if (prefersReducedMotion) openIntro();
+  else startMusic(); // Automatically start music on page load
 });
 
 const countdownTarget = new Date("2026-05-08T19:30:00+05:30").getTime();
