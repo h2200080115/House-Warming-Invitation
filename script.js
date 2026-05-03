@@ -13,7 +13,7 @@ const copyLocation = document.getElementById("copyLocation");
 const saveDate = document.getElementById("saveDate");
 const locationUrl = "https://maps.app.goo.gl/LdvfGQ3KJbN5LLx17";
 const musicSources = [
-  "assets/Inkem%20Inkem%20Inkem%20Kaavaale%20Flute%20Siva%20Geetha%20Govindam%20-%20flutesiva%20(128k).mp3"
+  "assets/Inkem.mp3"
 ];
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -425,7 +425,7 @@ async function playAudioSource(index = 0) {
     const timeout = window.setTimeout(() => {
       console.log("Audio load timeout");
       finish(false);
-    }, 5000); // Increased to 5 seconds
+    }, 5000);
 
     bgMusic.addEventListener("error", fail, { once: true });
     bgMusic.addEventListener("canplay", success, { once: true });
@@ -437,7 +437,7 @@ async function playAudioSource(index = 0) {
   bgMusic.pause();
   bgMusic.removeAttribute("src");
   bgMusic.load();
-  return false; // Don't try next source - only use flute version
+  return false;
 }
 
 async function startMusic() {
@@ -453,8 +453,6 @@ async function startMusic() {
     }
     audioState.usingAudioElement = false;
   }
-
-  // Don't fallback to synth music
 }
 
 function stopSynthMusic() {
